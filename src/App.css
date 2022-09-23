@@ -1,38 +1,122 @@
-.App {
-  text-align: center;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.btn {
+  border-radius: 5px;
+  border: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.btn:hover {
+  cursor: pointer;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.btn-primary {
+  background: rgb(55, 55, 255);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.btn-primary:hover {
+  background: blue !important;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.btn-primary:active {
+  background: rgb(0, 0, 174) !important;
+}
+
+.btn-success {
+  background: rgb(0, 193, 0);
+  color: white;
+}
+
+.btn-success:hover {
+  background: rgb(0, 147, 0) !important;
+}
+
+.btn-success:active {
+  background: rgb(1, 77, 1) !important;
+}
+
+.App {
+  /* border: 1px dashed green; */
+  margin: 20px;
+  text-align: center;
+}
+
+header {
+  background: turquoise;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+header .title {
+  margin: 10px 0;
+}
+
+.input-row {
+  /* border: 1px dashed green; */
+  /* display: flex;
+  justify-content: space-between; */
+  margin: 10px 0;
+}
+
+/* apply * => all children (input and button) */
+.input-row * {
+  /* border: 1px dashed green; */
+  padding: 8px 10px;
+  font-size: 1rem;
+  margin: 1px 0;
+  width: 100%;
+}
+
+.input-row input::placeholder {
+  color: brown;
+}
+
+.list-container {
+  /* border: 1px solid pink; */
+  text-align: cenger;
+}
+
+.list-item {
+  display: flex;
+  background: rgb(255, 239, 151);
+  border-radius: 5px;
+  margin: 3px 0;
+  /* vertical-align: middle; */
+}
+
+.list-item:hover {
+  background: gold;
+
+}
+
+.list-item * {
+  /* border: 1px dashed pink; */
+  padding: 10px;
+  font-size: 1.2em;
+  line-height: 100%;
+  cursor: default;
+}
+
+.list-item .fa-bars:hover {
+  cursor: move;
+  color: purple;
+  font-size: 1.5rem;
+}
+
+@media screen and (min-width:640px) {
+  .input-row {
+    /* border: 1px dashed green; */
+    display: flex;
+    justify-content: space-between;
   }
-  to {
-    transform: rotate(360deg);
+
+  .input-row button {
+    width: 200px;
+    margin-left: 10px;
   }
 }
