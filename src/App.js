@@ -1,5 +1,6 @@
 import './App.css';
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { isElementType } from '@testing-library/user-event/dist/utils';
 
 function App() {
   const [fruitItems, setFruitItems] = useState([
@@ -9,28 +10,114 @@ function App() {
     { id: 4, name: 'Graps', price: 4.0 },
     { id: 5, name: 'Orange', price: 2.0 },
   ])
+  const [itemState, setItemState] = useState({ isHover: false, isDone: false })
+  const [inputData, setInputData] = useState('')
+  const dragStartedItem = useRef(null)
+  const dragOverItem = useRef(null)
+  // const isItemHover = useRef(false)
+
+
+
+
+  const handleAddButton = (e) => {
+    if (inputData.length > 0) {
+      const id = Math.round(Math.random() * 10000 + 1)
+      setFruitItems([...fruitItems, { id, name: inputData, price: 1.0 }])
+      setInputData('')
+    }
+    console.log(inputData)
+  }
+  const handleDragStart = (e, index) => {
+    dragStartedItem.current = index
+    setItemState({ isHover: false, isDone: false })
+    // console.log('started')
+  }
+
+  const handleDragEnter = (e, index) => {
+    e.preventDefault()
+    if (dragStartedItem.current === index) return;
+    dragOverItem.current = index
+    setItemState({ ...itemState, isHover: !itemState.isHover })
+    // console.log('handleDragEnder: ')
+  }
+  // ----------------
+  // In order to trigger onDrop, set onDragOver functiona and event.preventDefault()..
+  // When mouse is released WITHIN targets (draggable lists )..
+  // Delete and insert...
+  const handleDrop = (e, index) => {
+    e.preventDefault()
+    const _fruitItems = fruitItems
+
+    // Delete started item and save it into draggedItem
+    const draggedItem = _fruitItems.splice(dragStartedItem.current, 1)[0]
+
+    // Insert the graggedItem into the dropped item position..
+    _fruitItems.splice(index, 0, draggedItem)
+
+    setFruitItems([..._fruitItems])
+    setItemState({ isHover: false, isDone: true })
+    // console.log('drop: ', e)
+    // console.log(document.elementFromPoint(e.clientX, e.clientY))
+  }
+  // When mouse is released OUT OF targets (draggable lists )..
+  // remove the border indicator to insert..
+  const handleDragEnd = (e) => {
+    e.preventDefault()
+    if (dragStartedItem.current === null) return
+    // console.log('handleDragEnd: ')
+    dragStartedItem.current = null
+    dragOverItem.current = null
+    setItemState({ isHover: false, isDone: true })
+  }
+  useEffect(() => {
+    // console.log('dragOverItem.current: ', dragOverItem.current)
+    if (dragOverItem.current === null) return
+    const listContainer = document.getElementById(`list-container`)
+    for (let i = 0; i < listContainer.childNodes.length; i++) {
+      if (dragOverItem.current === i) listContainer.childNodes[i].style.border = '2px dashed black'
+      else listContainer.childNodes[i].style.border = 'none'
+    }
+    // console.log('handleDrop-started:', dragStartedItem.current, ', over: ', dragOverItem.current, ', end:', ', listContainer: ', listContainer)
+    dragStartedItem.current = null
+    dragOverItem.current = null
+  }, [fruitItems])
+
+  // console.log('--app--', itemState)
   return (
     <div className="App">
       <header>
         <h2 className='title'>Fruit Lists</h2>
         <div className="input-row">
-          <input type='text' name='fruitName' placeholder='e.g. Banana' />
-          <button className='btn btn-primary'>Add&nbsp;item</button>
+          <input type='text' name='fruitName' placeholder='e.g. Banana' value={inputData} onChange={e => setInputData(e.target.value)} />
+          <button className='btn btn-primary' onClick={handleAddButton}>Add&nbsp;item</button>
         </div>
       </header>
 
       {/* Display the kinds of fruit.. */}
-      <div className="list-container">
-        <div className="list-item" draggable>
-          <i className="fa-solid fa-bars"></i>
-          <h3>Apple</h3>
-        </div>
-        <div className="list-item" draggable>
-          <i className="fa-solid fa-bars"></i>
-          <h3>Pear</h3>
-        </div>
+      <div id="list-container">
+        {
+          fruitItems.map((item, index) =>
+            <div className="list-item" key={item.id}
+              style={(index === dragOverItem.current) ?
+                (itemState.isDone ? { border: 'none' } : (dragStartedItem.current > index ? { borderTop: '5px solid red' } : { borderBottom: '5px solid blue' }))
+                : { border: 'none' }
+              }
+              draggable
+              onDragStart={e => handleDragStart(e, index)}
+              onDragEnter={(e) => handleDragEnter(e, index)}
+              onDragOver={e => e.preventDefault()}
+              // onDragLeave={e => handleDragLeave(e, index)}
+              onDragEnd={e => handleDragEnd(e)}
+              onDrop={(e) => handleDrop(e, index)}
+              onClick={e => console.log(e)}
+            >
+              <i className="fa-solid fa-bars"></i>
+              <h3>{item.name}</h3>
+            </div>
+          )
+        }
       </div>
-    </div>
+    </div >
   );
 }
 

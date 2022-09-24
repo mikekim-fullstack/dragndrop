@@ -102,9 +102,13 @@ header .title {
   cursor: default;
 }
 
+.list-item .fa-bars {
+  color: darkviolet;
+}
+
 .list-item .fa-bars:hover {
   cursor: move;
-  color: purple;
+  color: rgb(179, 0, 255);
   font-size: 1.5rem;
 }
 
