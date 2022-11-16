@@ -8,7 +8,17 @@ function App() {
     { id: 2, name: 'Banana', price: 1 },
     { id: 3, name: 'Pear', price: 1.2 },
     { id: 4, name: 'Graps', price: 4.0 },
-    { id: 5, name: 'Orange', price: 2.0 },
+    { id: 5, name: 'Lemon', price: 2.0 },
+    { id: 6, name: 'Pineapple', price: 2.0 },
+    { id: 7, name: 'Blueberry', price: 2.0 },
+    { id: 8, name: 'Plum', price: 2.0 },
+    { id: 9, name: 'Kiwi', price: 2.0 },
+    { id: 10, name: 'Dragon', price: 2.0 },
+    { id: 11, name: 'Mango', price: 2.0 },
+    { id: 12, name: 'Avocado', price: 2.0 },
+    { id: 13, name: 'Watermelon', price: 2.0 },
+    { id: 14, name: 'Melon', price: 2.0 },
+    { id: 15, name: 'Cherry', price: 2.0 },
   ])
   const [itemState, setItemState] = useState({ isHover: false, isDone: false })
   const [inputData, setInputData] = useState('')
